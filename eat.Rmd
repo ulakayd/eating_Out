@@ -31,7 +31,7 @@ require(tidyverse)
 require(tigerstats)
 require(knitr)
 require(foreign)
-require (haven)
+#require (haven)
 ```
 
 ```{r, eval=FALSE}
@@ -41,8 +41,44 @@ mydata <- select(GSS,race,age,eatout)
 mydata <- na.omit(mydata)
 ```
 
+## Methods
+
+Both 'race' and 'eatout' categorical. Therefore we use the cat~cat helper file. 
+
+## Descriptive results
+
+## graphical description
+
+```{r}
+barchartGC(~eatout + race,data=GSS)
+barchartGC(~eatout + race,data=GSS, type="percent")
+
+```
+  
+## numerical description
+
+```{r}
+table = xtabs(~eatout + race, data=GSS)
+print(table)
+rowPerc(table1)
+colPerc(table1)
+```
 
 
+
+## infrential results
+
+### Chi-squared test results
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+
+### fisherXY test results
+
+## Summary and Conclusions
 
 
 
