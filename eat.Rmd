@@ -31,6 +31,7 @@ require(tidyverse)
 require(tigerstats)
 require(knitr)
 require(foreign)
+GSS=read.csv('GSS1996.csv')
 #require (haven)
 ```
 
@@ -52,16 +53,15 @@ Both 'race' and 'eatout' categorical. Therefore we use the cat~cat helper file.
 ```{r}
 barchartGC(~eatout + race,data=GSS)
 barchartGC(~eatout + race,data=GSS, type="percent")
-
 ```
-  
+x axis is eatout (1= yes 2- no) labels on the columns are (1= black, 2=white, 3=other)  
 ## numerical description
 
 ```{r}
 table = xtabs(~eatout + race, data=GSS)
 print(table)
-rowPerc(table1)
-colPerc(table1)
+rowPerc(table)
+colPerc(table)
 ```
 
 
@@ -69,18 +69,22 @@ colPerc(table1)
 ## infrential results
 
 ### Chi-squared test results
-
 ```{r}
-chisq.test(table1)
-chisqtestGC(table1)
-fisher.test(table1)
+chisq.test(table)
+chisqtestGC(table)
 ```
 
+
 ### fisherXY test results
+```{r}
+fisher.test(table)
+fisherXY(GSS$eatout,GSS$race, printAll= T)
+```
+
 
 ## Summary and Conclusions
 
-
+We fail to reject the null hypothesis, there is no difference between race and the amount of how much people eat out. we are able to prove this with the fisher test and the p-value being 0. which is larger than 0.05 which is sufficient enough proof. 
 
 
 
