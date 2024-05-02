@@ -35,11 +35,13 @@ GSS=read.csv('GSS1996.csv')
 #require (haven)
 ```
 
-```{r, eval=FALSE}
-GSS <-read_dta(file="GSS1996.dta")
-GSS <- droplevels(GSS)
-mydata <- select(GSS,race,age,eatout)
-mydata <- na.omit(mydata)
+```{r}
+GSS = read.csv('GSS1996.csv')
+GSS$race = as.factor(GSS$race)
+GSS$eatout = as.factor(GSS$eatout)
+GSS$race = case_match(GSS$race, '1'~'white', '2'~'black', '3'~"other")
+GSS$eatout = case_match(GSS$eatout, '1'~'yes', '2' ~ 'no')
+
 ```
 
 ## Methods
@@ -51,10 +53,11 @@ Both 'race' and 'eatout' categorical. Therefore we use the cat~cat helper file.
 ## graphical description
 
 ```{r}
-barchartGC(~eatout + race,data=GSS)
-barchartGC(~eatout + race,data=GSS, type="percent")
+barchartGC(~race + eatout,data=GSS)
+barchartGC(~race + eatout,data=GSS, type="percent")
 ```
-x axis is eatout (1= yes 2- no) labels on the columns are (1= black, 2=white, 3=other)  
+
+This barchart shows that out of all 3 races, white people eat out the most with the average of 80 percent, other is next with 70 and last black with 65 percent.  
 ## numerical description
 
 ```{r}
@@ -63,9 +66,7 @@ print(table)
 rowPerc(table)
 colPerc(table)
 ```
-
-
-
+This table shows that out of all three races white people have the average to eat out the most at 82 percent, and the other race the least with 5 percent.
 ## infrential results
 
 ### Chi-squared test results
@@ -74,17 +75,16 @@ chisq.test(table)
 chisqtestGC(table)
 ```
 
-
+The chi-squared p-value is 0.0009 which is less than 0.05 which means we reject the null hypothesis that there is no difference in the amount people eat out depending on race.
 ### fisherXY test results
 ```{r}
 fisher.test(table)
 fisherXY(GSS$eatout,GSS$race, printAll= T)
 ```
-
+The p- value for the fisher exact test is 0.00122 which is greater than 0.05 which means we fail to reject the null hypothesis. 
 
 ## Summary and Conclusions
 
-We fail to reject the null hypothesis, there is no difference between race and the amount of how much people eat out. we are able to prove this with the fisher test and the p-value being 0. which is larger than 0.05 which is sufficient enough proof. 
-
+We are able reject the null hypothesis, there is a correlation between race and the amount of how much people eat out. we are able to prove this with the fisher test and the p-value being 0.00122 which is smaller than 0.05 which is sufficient enough proof aswell as out barchart providing the proof that white people are more likely to eat out at 80% versus black, and the other race. 
 
 
